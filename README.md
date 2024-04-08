@@ -1,2 +1,2 @@
 # Steam-Game-Recommender
-This code gives the user game recommendations from the video game web store, Steam.
+This code is designed to scrape steam and steamdb in order to reccomend games for the user. 
