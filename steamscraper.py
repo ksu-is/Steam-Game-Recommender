@@ -1,9 +1,11 @@
 import requests
 import bs4
 import pandas
-input = input("Enter a tag: ")
 res = requests.get("https://store.steampowered.com//")
 soup = bs4.BeautifulSoup(res.text, "lxml")
+
+# Gathering User Input
+TagInput = input("Choose a genre or leave it blank for any genre (Singleplayer, Open World, RPG, Multiplayer, MOBA, Adventure): ")
 
 # get the topseller games
 topsellers = soup.select("#tab_topsellers_content a.tab_item")
@@ -26,10 +28,11 @@ for Rank, container in enumerate(topsellers, start=1):
         FinalPrice = FinalPrice_element[0].text.strip()
         Tags = Tags_element[0].text.strip()
 
-        # Check if "singleplayer" tag is present
-        if input.lower() in Tags.lower():
+        # Use user input in order to sort tags. Entering nothing includes all tags
+        if TagInput.lower() in Tags.lower():
             # Write data to the csv file
             f.write(f"{Rank}, {Title}, {FinalPrice.replace(',', '.')}, {Tags.replace(',', '.')}\n")
+        
     else:
         print(f"Missing element in container {Rank}")
 
