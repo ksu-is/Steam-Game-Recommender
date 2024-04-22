@@ -8,16 +8,16 @@ soup = bs4.BeautifulSoup(res.text, "lxml")
 TagInput = input("Choose a genre or leave it blank for any genre (Singleplayer, Open World, RPG, Multiplayer, MOBA or Adventure): ")
 PriceInput = input("Insert a price range using the max price as the input or leave it blank for all prices ('10' for games $10 and below or 'Free' for free games): ")
 
-# get the topseller games
+# get the topseller games from team
 topsellers = soup.select("#tab_topsellers_content a.tab_item")
 
 # create csv file
 f = open("SteamTopGamesPy.csv", "w")
 
-# header row of the csv file
+# creates header row of the csv file
 f.write("Rank, Title, Price, Tags\n")
 
-# iteration of topseller game details
+# iterates through the topseller game details
 for Rank, container in enumerate(topsellers, start=1):
     Title_element = container.select(".tab_item_name")
     FinalPrice_element = container.select(".discount_final_price")
@@ -29,7 +29,7 @@ for Rank, container in enumerate(topsellers, start=1):
         FinalPrice = FinalPrice_element[0].text.strip()
         Tags = Tags_element[0].text.strip()
 
-        # Use user input in order to sort tags. Entering nothing includes all tags
+    # Converts Free to play string to floats in order to match steam's pricing format
     if FinalPrice == "Free to Play":
         FinalPrice = "$0.00"
     if FinalPrice == "Free To Play":
@@ -37,16 +37,18 @@ for Rank, container in enumerate(topsellers, start=1):
     if FinalPrice == "Free":
         FinalPrice = "$0.00"
 
-    PriceInputFloat = float(PriceInput)
-    if float(FinalPrice.replace("$", "")) <= PriceInputFloat:
+    # Converts user input to a float in order to match the steam price format in order to sort steam's prices by user input
+    if PriceInput:
+            PriceInputFloat = float(PriceInput)
+            if float(FinalPrice.replace("$", "")) <= PriceInputFloat:
+                if TagInput.lower() in Tags.lower():
+                    f.write(f"{Rank}, {Title}, {FinalPrice.replace(',', '.')}, {Tags.replace(',', '.')}\n")
+    else:
         if TagInput.lower() in Tags.lower():
             f.write(f"{Rank}, {Title}, {FinalPrice.replace(',', '.')}, {Tags.replace(',', '.')}\n")
-        else:
-            if TagInput.lower() in Tags.lower():
-                f.write(f"{Rank}, {Title}, {FinalPrice.replace(',', '.')}, {Tags.replace(',', '.')}\n")
-        
-    else:
-        print(f"Missing element in container {Rank}")
+#If any element is missing, it will print this message
+else:
+    print(f"Missing element in container {Rank}")
 
 # close the csv file
 f.close()
