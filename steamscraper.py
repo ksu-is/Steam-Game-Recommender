@@ -5,7 +5,8 @@ res = requests.get("https://store.steampowered.com//")
 soup = bs4.BeautifulSoup(res.text, "lxml")
 
 # Gathering User Input
-TagInput = input("Choose a genre or leave it blank for any genre (Singleplayer, Open World, RPG, Multiplayer, MOBA, Adventure): ")
+TagInput = input("Choose a genre or leave it blank for any genre (Singleplayer, Open World, RPG, Multiplayer, MOBA or Adventure): ")
+PriceInput = input("Insert a price range using the max price as the input or leave it blank for all prices ('10' for games $10 and below or 'Free' for free games): ")
 
 # get the topseller games
 topsellers = soup.select("#tab_topsellers_content a.tab_item")
@@ -29,9 +30,20 @@ for Rank, container in enumerate(topsellers, start=1):
         Tags = Tags_element[0].text.strip()
 
         # Use user input in order to sort tags. Entering nothing includes all tags
+    if FinalPrice == "Free to Play":
+        FinalPrice = "$0.00"
+    if FinalPrice == "Free To Play":
+        FinalPrice = "$0.00"
+    if FinalPrice == "Free":
+        FinalPrice = "$0.00"
+
+    PriceInputFloat = float(PriceInput)
+    if float(FinalPrice.replace("$", "")) <= PriceInputFloat:
         if TagInput.lower() in Tags.lower():
-            # Write data to the csv file
             f.write(f"{Rank}, {Title}, {FinalPrice.replace(',', '.')}, {Tags.replace(',', '.')}\n")
+        else:
+            if TagInput.lower() in Tags.lower():
+                f.write(f"{Rank}, {Title}, {FinalPrice.replace(',', '.')}, {Tags.replace(',', '.')}\n")
         
     else:
         print(f"Missing element in container {Rank}")
