@@ -36,6 +36,8 @@ for Rank, container in enumerate(topsellers, start=1):
         FinalPrice = "$0.00"
     if FinalPrice == "Free":
         FinalPrice = "$0.00"
+    if Title == "Steam Deck":
+        continue
 
     # Converts user input to a float in order to match the steam price format in order to sort steam's prices by user input
     if PriceInput:
