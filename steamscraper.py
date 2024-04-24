@@ -15,7 +15,7 @@ topsellers = soup.select("#tab_topsellers_content a.tab_item")
 f = open("SteamTopGamesPy.csv", "w")
 
 # creates header row of the csv file
-f.write("Rank, Title, Price, Tags\n")
+f.write("Title, Price, Tags\n")
 
 # iterates through the topseller game details
 for Rank, container in enumerate(topsellers, start=1):
@@ -45,7 +45,7 @@ for Rank, container in enumerate(topsellers, start=1):
                     f.write(f"{Rank}, {Title}, {FinalPrice.replace(',', '.')}, {Tags.replace(',', '.')}\n")
     else:
         if TagInput.lower() in Tags.lower():
-            f.write(f"{Rank}, {Title}, {FinalPrice.replace(',', '.')}, {Tags.replace(',', '.')}\n")
+            f.write(f"{Title}, {FinalPrice.replace(',', '.')}, {Tags.replace(',', '.')}\n")
 #If any element is missing, it will print this message
 else:
     print(f"Missing element in container {Rank}")
