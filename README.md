@@ -5,3 +5,6 @@ This python program scrapes the steam top sellers list and allows the user to vi
 - requests
 - bs4
 - pandas
+
+## After the code is run,
+It will create a seperate .csv where the results can be viewed in a cleane format

@@ -36,6 +36,7 @@ for Rank, container in enumerate(topsellers, start=1):
         FinalPrice = "$0.00"
     if FinalPrice == "Free":
         FinalPrice = "$0.00"
+    #Skips the Steam Deck
     if Title == "Steam Deck":
         continue
 
@@ -49,8 +50,6 @@ for Rank, container in enumerate(topsellers, start=1):
         if TagInput.lower() in Tags.lower():
             f.write(f"{Title}, {FinalPrice.replace(',', '.')}, {Tags.replace(',', '.')}\n")
 #If any element is missing, it will print this message
-else:
-    print(f"Missing element in container {Rank}")
 
 # close the csv file
 f.close()
